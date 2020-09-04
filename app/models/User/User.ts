@@ -1,7 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import { Sequelize } from "sequelize";
 
-interface IUserAttributes {
+export interface IUserAttributes {
   id?: number | undefined;
   firstname: string;
   lastname: string;
