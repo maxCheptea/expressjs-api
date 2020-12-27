@@ -2,22 +2,24 @@ import { Model, DataTypes } from "sequelize";
 import { Sequelize } from "sequelize";
 
 export interface IUserAttributes {
-  id?: number | undefined;
+  id: string | undefined;
   firstname: string;
   lastname: string;
   email: string;
   password: string;
+  token: string;
 
   createdAt?: Date;
   updatedAt?: Date;
-};
+}
 
 class User extends Model<IUserAttributes> implements IUserAttributes {
-  id?: number | undefined;
+  id: string | undefined;
   firstname!: string;
   lastname!: string;
   email!: string;
   password!: string;
+  token: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -45,8 +47,12 @@ export const userInit = (sequelize: Sequelize) => {
         allowNull: false,
       },
       password: {
-        type: new DataTypes.STRING(100),
+        type: new DataTypes.STRING(250),
         allowNull: false,
+      },
+      token: {
+        type: new DataTypes.STRING(400),
+        allowNull: true,
       },
     },
     {

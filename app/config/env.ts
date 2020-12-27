@@ -4,20 +4,14 @@ dotenv.config();
 
 interface IEnvironment{
   nodeEnv: string;
+  tokenSecret: string;
   port: string;
-  db: object;
 }
 
 const env: IEnvironment = {
   nodeEnv: process.env.ENV,
+  tokenSecret: process.env.TOKEN_SECRET,
   port: process.env.PORT,
-  db: {
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    dbname: process.env.DB,
-    dialect: process.env.DIALECT,
-  },
 };
 
 export default env;

@@ -1,4 +1,4 @@
-import { config } from "../config/db.config";
+import config from "../config/db.config";
 import { Sequelize } from "sequelize";
 import env from "../config/env";
 import { userInit } from "./User/User";
@@ -8,7 +8,7 @@ interface IDb {
   sequelize: Sequelize;
   Sequelize: any;
   init(): void;
-};
+}
 
 const envConfig = config[env.nodeEnv];
 

@@ -23,7 +23,6 @@ This README would normally document whatever steps are necessary to get your app
 * Code review
 * Other guidelines
 
-### Who do I talk to? ###
+### Generate a secret token: ###
 
-* Repo owner or admin
-* Other community or team contact
+`require('crypto').randomBytes(64).toString('hex')`

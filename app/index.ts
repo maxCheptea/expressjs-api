@@ -7,27 +7,24 @@ const swaggerUi = require('swagger-ui-express'),
 swaggerDocument = require('../swagger.json');
 
 import userRoutes from './api/routes/user/user';
-import middlewares from './api/middleware';
-
+import authRoutes from './api/routes/auth/auth';
 import db  from "./models/index";
-// db.sequelize.sync();
-db.init();
 
-const app = express();
+const gbs = express();
+gbs.disable("x-powered-by");
+
+db.init();
 
 var corsOptions = {
   origin: `http://localhost:${env.port}`
 };
 
+gbs.use(cors(corsOptions));
+gbs.use(bodyParser.json());
+gbs.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(middlewares.attachCurrentUser);
-app.use(cors(corsOptions));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+gbs.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+gbs.use('/api', authRoutes);
+gbs.use('/api/user', userRoutes);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use('/api', userRoutes);
-
-app.get('/', (req, res) => res.json({ message: 'Hello World!'}));
-
-app.listen(env.port, () => console.log(`Example app listening at http://localhost:${env.port}`));
+gbs.listen(env.port, () => console.log(`Example app listening at http://localhost:${env.port}`));

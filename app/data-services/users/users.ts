@@ -1,11 +1,41 @@
 import User from '../../models/User/User';
 import IRequest from '../../api/interfaces/IRequest';
 import { Op } from 'sequelize';
-import { generateAccessToken } from "../../services/auth/AuthService";
-import jwt from "jsonwebtoken";
 
+export const getUserByEmailAndPassword = async (email: string, password: string): Promise<User> => {
+  const user = await User.findOne({
+    attributes: ['id', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt'],
+    where: {
+      email: {
+        [Op.eq]: email,
+      },
+      password: {
+        [Op.eq]: password,
+      }
+    }
+  });
+
+  return user;
+};
+
+export const setUserToken = async (userId: string, token: string): Promise<void> => {
+  const [r] = await User.update(
+    { token },
+    {
+      where: {
+        id: {
+          [Op.eq]: userId,
+        },
+      },
+      returning: false,
+    },
+  );
+  console.log('setUserToken', r);
+};
+
+// Bellow are test functions
 export const createUser = async (req: IRequest): Promise<User> => {
-  const {email, firstname, lastname, password} = req.body;
+  const { email, firstname, lastname, password } = req.body;
 
   const user = await User.create({
     email, firstname, lastname, password
@@ -25,11 +55,6 @@ export const getUsers = async (req: IRequest): Promise<User[]> => {
 export const getUser = async (req: IRequest): Promise<User> => {
   const { userId } = req.params;
   try {
-    const token = generateAccessToken(userId);
-    console.log('token: ', token);
-    console.log('token decoded: ', jwt.decode(token, {complete: true}));
-    console.log('token length: ', token.length);
-    
     const user = await User.findOne({
       attributes: ['id', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt'],
       where: {

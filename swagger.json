@@ -2,17 +2,21 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "My User Project CRUD",
-    "description": "My User Project Application API",
+    "title": "GBS API",
+    "description": "My get a Bus Seat Application API",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "localhost:8081",
+  "host": "localhost:8080",
   "basePath": "/api/",
 
   "tags": [
+    {
+      "name": "Authentication",
+      "description": "Login users into the system."
+    },
     {
       "name": "Users",
       "description": "API for users in the system"
@@ -24,8 +28,36 @@
   ],
 
   "paths": {
-    "/users": {
+    "/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "User that we want to authenticate",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User that we want to authenticate",
+            "schema": {
+              "$ref": "#/definitions/Authentication"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "The user is logged in",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/user/getAll": {
       "get": {
+        "security": {
+          "bearerAuth": []
+        },
         "tags": ["Users"],
         "summary": "Get all users in system",
         "responses": {
@@ -34,6 +66,9 @@
             "schema": {
               "$ref": "#/definitions/Users"
             }
+          },
+          "401": {
+            "$ref": "#/definitions/responses/Unauthorized"
           }
         }
       }
@@ -61,15 +96,60 @@
             }
           }
         }
+      }
+    },
+    "/user/{userId}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get one user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the User",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "$ref": "#/definitions/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found!"
+          },
+          "500": {
+            "$ref": "#/definitions/responses/InternalServerError"
+          }
+        }
       },
       "put": {
         "tags": ["Users"],
         "description": "Create new user in system",
         "parameters": [
           {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the User",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
             "name": "user",
             "in": "body",
-            "description": "User that we want to create",
+            "description": "User that we want to update",
             "schema": {
               "$ref": "#/definitions/User"
             }
@@ -87,8 +167,20 @@
       }
     }
   },
-
   "definitions": {
+    "Authentication": {
+      "required": ["firstname", "lastname", "email", "password"],
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "password": {
+          "type": "string",
+          "format": "password"
+        }
+      }
+    },
     "User": {
       "required": ["firstname", "lastname", "email", "password"],
       "properties": {
@@ -124,7 +216,38 @@
     "Users": {
       "type": "array",
       "$ref": "#/definitions/User"
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Not authorized to access the resource!",
+        "schema": {
+          "$ref": "#definitions/schemas/Error"
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal server error"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "properties": {
+          "status": { "type": "string"},
+          "message": { "type": "string"}
+        }
+      }
     }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": {
+    "bearerAuth": []
   },
   "schemes": ["http"],
   "consumes": ["application/json"],
