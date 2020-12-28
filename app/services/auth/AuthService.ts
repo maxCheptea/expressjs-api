@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import env from "../../config/env";
-import { getUserByEmailAndPassword, setUserToken } from "../../data-services/users/users";
+import { getUserByEmailAndPassword } from "../../data-services/users/users";
+import { blacklistToken } from "../../data-services/auth/auth";
 
 /**
  * Generate a Token based on the user id.
@@ -25,10 +26,10 @@ export const login = async (username: string, password: string): Promise<string>
     if (!user) {
       return Promise.reject(new Error('Wrong Email or Password'));
     }
-    const { id } = user;
-    const token = generateAccessToken(id);
-console.log(id);
-    await setUserToken(id, token);
 
-    return token;
+    return generateAccessToken(user.id);
 };
+
+export const logout = async (token: string): Promise<void> => {
+  await blacklistToken(token);
+}

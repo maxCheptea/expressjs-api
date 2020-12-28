@@ -12,7 +12,7 @@ class TokenBlacklist extends Model<ITokenBlacklistAttributes> implements ITokenB
   public readonly createdAt!: Date;
 }
 
-export const userInit = (sequelize: Sequelize) => {
+export const tokenBlacklistInit = (sequelize: Sequelize) => {
   TokenBlacklist.init(
     {
       token: {

@@ -18,21 +18,6 @@ export const getUserByEmailAndPassword = async (email: string, password: string)
   return user;
 };
 
-export const setUserToken = async (userId: string, token: string): Promise<void> => {
-  const [r] = await User.update(
-    { token },
-    {
-      where: {
-        id: {
-          [Op.eq]: userId,
-        },
-      },
-      returning: false,
-    },
-  );
-  console.log('setUserToken', r);
-};
-
 // Bellow are test functions
 export const createUser = async (req: IRequest): Promise<User> => {
   const { email, firstname, lastname, password } = req.body;

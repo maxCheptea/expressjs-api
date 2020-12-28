@@ -53,6 +53,17 @@
         }
       }
     },
+    "/logout": {
+      "get": {
+        "tags": ["Authentication"],
+        "summary": "Logout a user",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/user/getAll": {
       "get": {
         "security": {

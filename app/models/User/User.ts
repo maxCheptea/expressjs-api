@@ -7,7 +7,6 @@ export interface IUserAttributes {
   lastname: string;
   email: string;
   password: string;
-  token: string;
 
   createdAt?: Date;
   updatedAt?: Date;
@@ -19,7 +18,6 @@ class User extends Model<IUserAttributes> implements IUserAttributes {
   lastname!: string;
   email!: string;
   password!: string;
-  token: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -49,10 +47,6 @@ export const userInit = (sequelize: Sequelize) => {
       password: {
         type: new DataTypes.STRING(250),
         allowNull: false,
-      },
-      token: {
-        type: new DataTypes.STRING(400),
-        allowNull: true,
       },
     },
     {
