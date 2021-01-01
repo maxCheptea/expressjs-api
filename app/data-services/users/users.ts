@@ -18,6 +18,24 @@ export const getUserByEmailAndPassword = async (email: string, password: string)
   return user;
 };
 
+export const getUserById = async (id: string): Promise<User> => {
+  try {
+    const user = await User.findOne({
+      attributes: ['id', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt'],
+      where: {
+        id: {
+          [Op.eq]: id
+        }
+      }
+    });
+
+    return user;
+  } catch (error) {
+      console.log(error.message)
+  }
+}
+
+
 // Bellow are test functions
 export const createUser = async (req: IRequest): Promise<User> => {
   const { email, firstname, lastname, password } = req.body;
@@ -31,7 +49,7 @@ export const createUser = async (req: IRequest): Promise<User> => {
 
 export const getUsers = async (req: IRequest): Promise<User[]> => {
   const users = await User.findAll({
-    attributes: ['id', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt']
+    attributes: ['id', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt'],
   });
 
   return users;

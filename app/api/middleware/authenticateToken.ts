@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import { Response, NextFunction } from 'express';
 import IRequest from '../interfaces/IRequest';
 import env from "../../config/env";
+import HttpStatusCode from "../../utils/enums/HttpCodeStatuses";
+import { isTokenBlacklisted } from "../../data-services/auth/auth";
 
 /**
  * Authenticate user and attach it to the request
@@ -10,17 +12,25 @@ import env from "../../config/env";
  * @param {Response} res  Express res Object
  * @param {NextFunction} next  Express next Function
  */
-const authenticateToken = (req: IRequest, res: Response, next: NextFunction) => {
+const authenticateToken = async (req: IRequest, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
-  if (token == null) return res.sendStatus(401) // if there isn't any token
+  if (token === null){
+    return res.sendStatus(HttpStatusCode.UNAUTHORIZED) // if there isn't any token
+  } 
+
+  const isTokenLoggedOut = await isTokenBlacklisted(token);
+  if (isTokenLoggedOut) {
+    return res.sendStatus(HttpStatusCode.FORBIDDEN);
+  }
 
   jwt.verify(token, env.tokenSecret, (err: any, user: any) => {
-    console.log(err)
-    if (err) return res.sendStatus(403)
-    req.currentUser = user
+    if (err) {
+      return res.sendStatus(HttpStatusCode.FORBIDDEN);
+    }
+    req.currentUser = user;
     
-    next()
+    next();
   })
 }
 

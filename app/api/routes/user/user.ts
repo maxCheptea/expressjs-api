@@ -2,7 +2,7 @@ import { Router, Response } from 'express';
 import authenticateToken from '../../middleware/authenticateToken';
 import IRequest from '../../interfaces/IRequest';
 import User from '../../../models/User/User';
-import { createUser, getUsers, updateUser, getUser } from '../../../controllers/users/UsersController';
+import { createUser, getUsers, updateUser, getUser } from '../../../data-services/users/users';
 
 const userRoutes = Router();
 
@@ -15,7 +15,7 @@ userRoutes.post('/', async (req, res) => {
 
 userRoutes.get('/getAll', async (req, res) => {
   const users = await getUsers(req);
-  res.status(200).json({ users }).status(200);
+  res.status(200).json(users).status(200);
 });
 
 userRoutes.get('/:userId', async (req, res) => {
