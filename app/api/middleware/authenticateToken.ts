@@ -21,12 +21,12 @@ const authenticateToken = async (req: IRequest, res: Response, next: NextFunctio
 
   const isTokenLoggedOut = await isTokenBlacklisted(token);
   if (isTokenLoggedOut) {
-    return res.sendStatus(HttpStatusCode.FORBIDDEN);
+    return res.sendStatus(HttpStatusCode.UNAUTHORIZED);
   }
 
   jwt.verify(token, env.tokenSecret, (err: any, user: any) => {
     if (err) {
-      return res.sendStatus(HttpStatusCode.FORBIDDEN);
+      return res.sendStatus(HttpStatusCode.UNAUTHORIZED);
     }
     req.currentUser = user;
     

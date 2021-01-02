@@ -1,6 +1,14 @@
-import User from '../../models/User/User';
+import User, { IUserAttributes } from '../../models/User/User';
 import IRequest from '../../api/interfaces/IRequest';
 import { Op } from 'sequelize';
+
+export const createUser = async ({ email, firstname, lastname, password }: IUserAttributes): Promise<User> => {
+  const user = await User.create({
+    email, firstname, lastname, password
+  });
+
+  return user;
+}
 
 export const getUserByEmailAndPassword = async (email: string, password: string): Promise<User> => {
   const user = await User.findOne({
@@ -37,15 +45,7 @@ export const getUserById = async (id: string): Promise<User> => {
 
 
 // Bellow are test functions
-export const createUser = async (req: IRequest): Promise<User> => {
-  const { email, firstname, lastname, password } = req.body;
 
-  const user = await User.create({
-    email, firstname, lastname, password
-  });
-
-  return user;
-}
 
 export const getUsers = async (req: IRequest): Promise<User[]> => {
   const users = await User.findAll({

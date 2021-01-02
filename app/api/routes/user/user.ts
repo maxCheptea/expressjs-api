@@ -1,16 +1,17 @@
 import { Router, Response } from 'express';
 import authenticateToken from '../../middleware/authenticateToken';
 import IRequest from '../../interfaces/IRequest';
-import User from '../../../models/User/User';
-import { createUser, getUsers, updateUser, getUser } from '../../../data-services/users/users';
+import { getUsers, updateUser, getUser } from '../../../data-services/users/users';
+import { create } from '../../../services/users/UsersService';
 
 const userRoutes = Router();
 
 userRoutes.use(authenticateToken);
 
 userRoutes.post('/', async (req, res) => {
-  const user = await createUser(req);
-  res.status(200).json({ user }).status(200);
+  const { firstname, lastname, password, email } = req.body;
+  const user = await create({ firstname, lastname, password, email });
+  res.status(200).json(user).status(200);
 });
 
 userRoutes.get('/getAll', async (req, res) => {

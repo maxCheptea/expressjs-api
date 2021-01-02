@@ -2,7 +2,7 @@ import { Model, DataTypes } from "sequelize";
 import { Sequelize } from "sequelize";
 
 export interface IUserAttributes {
-  id: string | undefined;
+  id?: string;
   firstname: string;
   lastname: string;
   email: string;
