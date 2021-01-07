@@ -1,36 +1,76 @@
-import { Router, Response } from 'express';
+import { Router } from 'express';
+import { body, validationResult } from 'express-validator';
 import authenticateToken from '../../middleware/authenticateToken';
-import IRequest from '../../interfaces/IRequest';
-import { getUsers, updateUser, getUser } from '../../../data-services/users/users';
-import { create } from '../../../services/users/UsersService';
+import HttpStatusCode from '../../../utils/enums/HttpCodeStatuses';
+import { create, update, getUser, getAllUsers } from '../../../services/users/UsersService';
 
 const userRoutes = Router();
 
 userRoutes.use(authenticateToken);
 
-userRoutes.post('/', async (req, res) => {
-  const { firstname, lastname, password, email } = req.body;
-  const user = await create({ firstname, lastname, password, email });
-  res.status(200).json(user).status(200);
+userRoutes.get('/getAll', async (req, res, next) => {
+  try {
+    const users = await getAllUsers();
+    res.status(HttpStatusCode.OK).json(users);
+  } catch (error) {
+    next(error);
+  }
 });
 
-userRoutes.get('/getAll', async (req, res) => {
-  const users = await getUsers(req);
-  res.status(200).json(users).status(200);
+userRoutes.get('/:userId', async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const user = await getUser(userId);
+    if (user) {
+      res.status(HttpStatusCode.OK).json(user);
+    } else {
+      res.status(HttpStatusCode.NOT_FOUND).send('404 - Not found');
+    }
+  } catch (error) {
+    next(error);
+  }
 });
 
-userRoutes.get('/:userId', async (req, res) => {
-  const user = await getUser(req);
-  res.status(200).json({ user }).status(200);
+userRoutes.post('/', body('email').isEmail(), async (req, res, next) => {
+  try {
+    const { id, firstname, lastname, password, email } = req.body;
+    const errors = validationResult(req);
+    console.log(errors);
+    if (!errors.isEmpty()) {
+      return res.status(HttpStatusCode.UNPROCESSABLE_ENTITY).json({ errors: errors.array()})
+    }
+    
+    if (id) {
+      return res.status(HttpStatusCode.BAD_REQUEST).send(`Bad request: ID should not be provided, since it is determined automatically by the database.`)
+    }
+    
+    const user = await create({ firstname, lastname, password, email });
+    res.json(user).status(HttpStatusCode.OK);
+  } catch (error) {
+    next(error);
+  }
 });
 
-userRoutes.put('/:userId', async (req, res) => {
-  const user = await updateUser(req);
-  res.status(200).json({ user }).status(200);
+userRoutes.put('/:userId', async (req, res, next) => {
+  try {
+    const { firstname, lastname, password, email } = req.body;
+    const { userId } = req.params;
+
+    const entityUpdated = await update(userId, { firstname, lastname, password, email })
+    .catch(error => {
+      return res.status(HttpStatusCode.NOT_FOUND).json({message: "Entity not found"});
+    });
+    
+    if (entityUpdated) {
+      return res.sendStatus(HttpStatusCode.OK);
+    }
+  } catch (error) {
+    next(error);
+  }
 });
 
-userRoutes.get('/me', (req: IRequest, res: Response) => {
-  return res.json({ user: req.currentUser }).status(200);
+userRoutes.delete('/:userId', async (req, res, next) => {
+  const { userId } = req.params;
 });
 
 export default userRoutes;

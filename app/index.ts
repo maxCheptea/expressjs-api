@@ -16,7 +16,7 @@ gbs.disable("x-powered-by");
 db.init();
 
 var corsOptions = {
-  origin: `http://localhost:${env.port}`
+  origin: `http://localhost:${env.port}`,
 };
 
 gbs.use(cors(corsOptions));

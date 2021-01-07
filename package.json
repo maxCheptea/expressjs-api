@@ -6,10 +6,10 @@
   "author": "Max Cheptea <max.cheptea@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@types/jsonwebtoken": "^8.5.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-validator": "^6.9.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.3.0",
     "pg-hstore": "^2.3.3",
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.7",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.0.24",
     "@types/sequelize": "^4.28.9",
     "@types/validator": "^13.1.0",
@@ -33,6 +34,6 @@
   "scripts": {
     "start": "node app/index.ts",
     "build": "tsc",
-    "dev": "nodemon --watch 'app**/*.ts' --exec 'ts-node' app/index.ts"
+    "dev": "nodemon --watch 'app/' --exec 'ts-node' app/index.ts"
   }
 }
