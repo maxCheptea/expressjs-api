@@ -1,4 +1,5 @@
 import { Dialect } from "sequelize";
+import config from "./config.json";
 
 interface IDbConfig {
   host: string;
@@ -8,10 +9,6 @@ interface IDbConfig {
   dialect: Dialect;
 }
 
-interface IKeyValue {
-  [key: string]: IDbConfig;
-}
-
 interface ISequelizeConfig {
   development: IDbConfig;
   test: IDbConfig;
@@ -19,26 +16,4 @@ interface ISequelizeConfig {
   [propName: string]: IDbConfig;
 }
 
-export const config: ISequelizeConfig = {
-  "development": {
-    username: "postgres",
-    password: "123",
-    database: "postgres",
-    host: "localhost",
-    dialect: "postgres"
-  },
-  "test": {
-    username: "root",
-    password: null,
-    database: "database_test",
-    host: "127.0.0.1",
-    dialect: "mysql"
-  },
-  "production": {
-    username: "root",
-    password: null,
-    database: "database_test",
-    host: "127.0.0.1",
-    dialect: "mysql"
-  }
-}
+export default config as ISequelizeConfig;

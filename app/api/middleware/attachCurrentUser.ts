@@ -16,7 +16,7 @@ const attachCurrentUser = async (req: IRequest, res: Response, next: NextFunctio
       attributes: ['id', 'email', 'firstname', 'lastname'],
       where: {
         id: {
-          [Op.eq]: 'a82c9f0f-06d8-4dc8-b205-db335a824d43'
+          [Op.eq]: '11876683-8979-4dc2-8b63-34b93190aea0'
         }
       }
     });
