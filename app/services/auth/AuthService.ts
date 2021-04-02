@@ -8,10 +8,8 @@ import { blacklistToken } from "../../data-services/auth/auth";
  * 
  * @param userId The user Db id.
  */
-export const generateAccessToken = (userId: string) => {
-  // expires after half and hour (1800 seconds = 30 minutes)
-  return jwt.sign({ userId }, env.tokenSecret, { expiresIn: '30m' });
-};
+export const generateAccessToken =
+  (userId: string) => jwt.sign({ userId }, env.tokenSecret, { expiresIn: '1440m' });
 
 /**
  * Authenticate a User

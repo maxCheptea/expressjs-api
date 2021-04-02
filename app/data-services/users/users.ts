@@ -1,6 +1,8 @@
 import User, { IUserAttributes } from '../../models/User/User';
 import { Op } from 'sequelize';
 
+const attributes = ['id', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt'];
+
 export const createUser = async (userAttributes: IUserAttributes): Promise<User> => {
   const user = await User.create(userAttributes);
 
@@ -23,36 +25,34 @@ export const updateUser = async (id: string, userAttributes: IUserAttributes): P
   return users;
 };
 
-export const deleteUser = async (id: string) => {
-  await User.destroy({
+export const deleteUser = async (id: string): Promise<number> => {
+  const deletedRows = await User.destroy({
     where: {
       id: {
         [Op.eq]: id,
       },
     },
   });
+
+  return deletedRows;
 };
 
 export const getUserById = async (id: string): Promise<User> => {
-  try {
-    const user = await User.findOne({
-      attributes: ['id', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt'],
-      where: {
-        id: {
-          [Op.eq]: id
-        }
+  const user = await User.findOne({
+    attributes,
+    where: {
+      id: {
+        [Op.eq]: id
       }
-    });
+    }
+  });
 
-    return user;
-  } catch (error) {
-      console.log(error.message)
-  }
+  return user;
 };
 
 export const getUsers = async (): Promise<User[]> => {
   const users = await User.findAll({
-    attributes: ['id', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt'],
+    attributes,
   });
 
   return users;
@@ -60,7 +60,7 @@ export const getUsers = async (): Promise<User[]> => {
 
 export const getUserByEmailAndPassword = async (email: string, password: string): Promise<User> => {
   const user = await User.findOne({
-    attributes: ['id', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt'],
+    attributes,
     where: {
       email: {
         [Op.eq]: email,

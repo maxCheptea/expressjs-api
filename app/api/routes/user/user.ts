@@ -2,7 +2,9 @@ import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import authenticateToken from '../../middleware/authenticateToken';
 import HttpStatusCode from '../../../utils/enums/HttpCodeStatuses';
-import { create, update, getUser, getAllUsers } from '../../../services/users/UsersService';
+import { create, update, getUser, getAllUsers, removeUser } from '../../../services/users/UsersService';
+
+const notFoundMessage = '404 - Entity not found!';
 
 const userRoutes = Router();
 
@@ -13,7 +15,7 @@ userRoutes.get('/getAll', async (req, res, next) => {
     const users = await getAllUsers();
     res.status(HttpStatusCode.OK).json(users);
   } catch (error) {
-    next(error);
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send(error.message);
   }
 });
 
@@ -24,30 +26,26 @@ userRoutes.get('/:userId', async (req, res, next) => {
     if (user) {
       res.status(HttpStatusCode.OK).json(user);
     } else {
-      res.status(HttpStatusCode.NOT_FOUND).send('404 - Not found');
+      res.status(HttpStatusCode.NOT_FOUND).send(notFoundMessage);
     }
   } catch (error) {
-    next(error);
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send(error.message);
   }
 });
 
 userRoutes.post('/', body('email').isEmail(), async (req, res, next) => {
   try {
-    const { id, firstname, lastname, password, email } = req.body;
+    const { firstname, lastname, password, email } = req.body;
     const errors = validationResult(req);
-    console.log(errors);
+
     if (!errors.isEmpty()) {
       return res.status(HttpStatusCode.UNPROCESSABLE_ENTITY).json({ errors: errors.array()})
-    }
-    
-    if (id) {
-      return res.status(HttpStatusCode.BAD_REQUEST).send(`Bad request: ID should not be provided, since it is determined automatically by the database.`)
     }
     
     const user = await create({ firstname, lastname, password, email });
     res.json(user).status(HttpStatusCode.OK);
   } catch (error) {
-    next(error);
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send(error.message);
   }
 });
 
@@ -56,21 +54,32 @@ userRoutes.put('/:userId', async (req, res, next) => {
     const { firstname, lastname, password, email } = req.body;
     const { userId } = req.params;
 
-    const entityUpdated = await update(userId, { firstname, lastname, password, email })
-    .catch(error => {
-      return res.status(HttpStatusCode.NOT_FOUND).json({message: "Entity not found"});
-    });
-    
+    const entityUpdated = await update(userId, { firstname, lastname, password, email });
+
     if (entityUpdated) {
       return res.sendStatus(HttpStatusCode.OK);
+    } else {
+      return res.status(HttpStatusCode.NOT_FOUND).send(notFoundMessage);
     }
   } catch (error) {
-    next(error);
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send(error.message);
   }
 });
 
 userRoutes.delete('/:userId', async (req, res, next) => {
-  const { userId } = req.params;
+  try{
+    const { userId } = req.params;
+    const isUserDeleted = await removeUser(userId);
+
+    if (isUserDeleted) {
+      return res.sendStatus(HttpStatusCode.OK);
+    } else {
+      return res.status(HttpStatusCode.NOT_FOUND).send(notFoundMessage);
+    }
+
+  } catch (error) {
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).send(error.message);
+  }
 });
 
 export default userRoutes;
