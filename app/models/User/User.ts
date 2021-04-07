@@ -1,15 +1,11 @@
-import { Model, DataTypes } from "sequelize";
-import { Sequelize } from "sequelize";
+import { Sequelize, Model, DataTypes } from "sequelize";
+import IBaseModel from "../IBaseModel";
 
-export interface IUserAttributes {
-  id?: string;
+export interface IUserAttributes extends IBaseModel {
   firstname: string;
   lastname: string;
   email: string;
   password: string;
-
-  createdAt?: Date;
-  updatedAt?: Date;
 }
 
 class User extends Model<IUserAttributes> implements IUserAttributes {

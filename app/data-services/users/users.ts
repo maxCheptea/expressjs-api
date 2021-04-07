@@ -1,5 +1,6 @@
-import User, { IUserAttributes } from '../../models/User/User';
 import { Op } from 'sequelize';
+import User, { IUserAttributes } from '../../models/User/User';
+import UserRole from '../../models/Privileges/UserRole';
 
 const attributes = ['id', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt'];
 
@@ -44,7 +45,8 @@ export const getUserById = async (id: string): Promise<User> => {
       id: {
         [Op.eq]: id
       }
-    }
+    },
+    include: [{ model: UserRole, as: 'roles', attributes: ['name'], through: {attributes: []} }],
   });
 
   return user;
