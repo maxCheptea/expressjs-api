@@ -1,7 +1,7 @@
-import User, { IUserAttributes } from '../../models/User/User';
-import { createUser, getUsers, updateUser, getUserById, deleteUser } from '../../data-services/users/users';
+import UserModel, { IUserAttributes } from '../../models/User/UserModel';
+import { createUser, getUsers, updateUser, getUserById, deleteUser } from '../../data-services/users/usersService';
 
-export const getUser = async (id: string): Promise<User> => {
+export const getUser = async (id: string): Promise<UserModel> => {
   const user = await getUserById(id).catch(error => {
     return Promise.reject(new Error(error.message));
   });
@@ -9,7 +9,7 @@ export const getUser = async (id: string): Promise<User> => {
   return user;
 }
 
-export const getAllUsers = async (): Promise<User[]> => {
+export const getAllUsers = async (): Promise<UserModel[]> => {
   const users =  await getUsers().catch(error => {
     return Promise.reject(new Error(error.message));
   });
@@ -17,7 +17,7 @@ export const getAllUsers = async (): Promise<User[]> => {
   return users;
 }
 
-export const create = async (userAttributes: IUserAttributes): Promise<User> => {
+export const create = async (userAttributes: IUserAttributes): Promise<UserModel> => {
   const user =  await createUser(userAttributes).catch(error => {
     return Promise.reject(new Error(error.message));
   });

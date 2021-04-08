@@ -1,18 +1,14 @@
-import { Model, DataTypes } from "sequelize";
-import { Sequelize } from "sequelize";
+import { Sequelize, Model, DataTypes } from "sequelize";
+import IBaseModel from "../IBaseModel";
 
-export interface IUserAttributes {
-  id?: string;
+export interface IUserAttributes extends IBaseModel {
   firstname: string;
   lastname: string;
   email: string;
   password: string;
-
-  createdAt?: Date;
-  updatedAt?: Date;
 }
 
-class User extends Model<IUserAttributes> implements IUserAttributes {
+class UserModel extends Model<IUserAttributes> implements IUserAttributes {
   id: string | undefined;
   firstname!: string;
   lastname!: string;
@@ -24,7 +20,7 @@ class User extends Model<IUserAttributes> implements IUserAttributes {
 }
 
 export const userInit = (sequelize: Sequelize) => {
-  User.init(
+  UserModel.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -57,4 +53,4 @@ export const userInit = (sequelize: Sequelize) => {
   );
 }
 
-export default User;
+export default UserModel;

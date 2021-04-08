@@ -6,14 +6,14 @@ export interface ITokenBlacklistAttributes {
   createdAt?: Date;
 }
 
-class TokenBlacklist extends Model<ITokenBlacklistAttributes> implements ITokenBlacklistAttributes {
+class TokenBlacklistModel extends Model<ITokenBlacklistAttributes> implements ITokenBlacklistAttributes {
   token: string;
 
   public readonly createdAt!: Date;
 }
 
 export const tokenBlacklistInit = (sequelize: Sequelize) => {
-  TokenBlacklist.init(
+  TokenBlacklistModel.init(
     {
       token: {
         type: new DataTypes.STRING(400),
@@ -28,4 +28,4 @@ export const tokenBlacklistInit = (sequelize: Sequelize) => {
   );
 }
 
-export default TokenBlacklist;
+export default TokenBlacklistModel;

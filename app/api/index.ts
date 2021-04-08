@@ -1,1 +1,1 @@
-export { default as userRoutes } from "./routes/user/user";
+export { default as userRoutes } from "./routes/user/userApi";

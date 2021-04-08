@@ -1,24 +1,21 @@
 import { Model, DataTypes } from "sequelize";
 import { Sequelize } from "sequelize";
+import IBaseModel from "../IBaseModel";
 
-interface IUserAttributes {
-  id?: number | undefined;
+interface IUserPermissionsAttributes extends IBaseModel {
   name: string;
+}
 
-  createdAt?: Date;
-  updatedAt?: Date;
-};
-
-class Role extends Model<IUserAttributes> implements IUserAttributes {
-  id?: number | undefined;
+class UserPermissionModel extends Model<IUserPermissionsAttributes> implements IUserPermissionsAttributes {
+  id?: string;
   name!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-export const roleInit = (sequelize: Sequelize) => {
-  Role.init(
+export const userPermissionsInit = (sequelize: Sequelize) => {
+  UserPermissionModel.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -32,11 +29,11 @@ export const roleInit = (sequelize: Sequelize) => {
       },
     },
     {
-      tableName: "roles",
+      tableName: "user_permissions",
       timestamps: true,
       sequelize, // passing the `sequelize` instance is required
     },
   );
 }
 
-export default Role;
+export default UserPermissionModel;

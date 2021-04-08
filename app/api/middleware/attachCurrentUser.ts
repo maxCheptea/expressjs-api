@@ -1,4 +1,4 @@
-import User from '../../models/User/User';
+import UserModel from '../../models/User/UserModel';
 import { Response, NextFunction } from 'express';
 import IRequest from '../interfaces/IRequest';
 import { Op } from 'sequelize';
@@ -12,7 +12,7 @@ import { Op } from 'sequelize';
  */
 const attachCurrentUser = async (req: IRequest, res: Response, next: NextFunction) => {
   try {
-    const user = await User.findOne({
+    const user = await UserModel.findOne({
       attributes: ['id', 'email', 'firstname', 'lastname'],
       where: {
         id: {

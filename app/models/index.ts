@@ -1,9 +1,10 @@
 import config from "../config/db.config";
 import { Sequelize } from "sequelize";
 import env from "../config/env";
-import { userInit } from "./User/User";
-import { roleInit } from "./Privileges/Role";
-import { tokenBlacklistInit } from "./Auth/TokenBlacklist";
+import { userInit } from "./User/UserModel";
+import { userRoleInit } from "./Privileges/UserRoleModel";
+import { tokenBlacklistInit } from "./Auth/TokenBlacklistModel";
+import { userRolesAssocInit } from "./Privileges/UserRolesAssocModel";
 
 interface IDb {
   sequelize: Sequelize;
@@ -19,9 +20,10 @@ const sequelize = new Sequelize(envConfig.database, envConfig.username, envConfi
 });
 
 const init = () => {
-  userInit(sequelize);
-  roleInit(sequelize);
   tokenBlacklistInit(sequelize);
+  userInit(sequelize);
+  userRoleInit(sequelize);
+  userRolesAssocInit(sequelize);
 }
 
 const db: IDb = {
