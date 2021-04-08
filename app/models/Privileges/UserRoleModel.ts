@@ -5,7 +5,7 @@ export interface IUserRoleAttributes extends IBaseModel {
   name: string;
 }
 
-class UserRole extends Model<IUserRoleAttributes> implements IUserRoleAttributes {
+class UserRoleModel extends Model<IUserRoleAttributes> implements IUserRoleAttributes {
   id?: string;
   name!: string;
 
@@ -14,7 +14,7 @@ class UserRole extends Model<IUserRoleAttributes> implements IUserRoleAttributes
 }
 
 export const userRoleInit = (sequelize: Sequelize) => {
-  UserRole.init(
+  UserRoleModel.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -35,4 +35,4 @@ export const userRoleInit = (sequelize: Sequelize) => {
   );
 }
 
-export default UserRole;
+export default UserRoleModel;

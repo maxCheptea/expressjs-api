@@ -1,10 +1,10 @@
 import config from "../config/db.config";
 import { Sequelize } from "sequelize";
 import env from "../config/env";
-import { userInit } from "./User/User";
-import { userRoleInit } from "./Privileges/UserRole";
-import { tokenBlacklistInit } from "./Auth/TokenBlacklist";
-import { userRolesAssocInit } from "./Privileges/UserRolesAssoc";
+import { userInit } from "./User/UserModel";
+import { userRoleInit } from "./Privileges/UserRoleModel";
+import { tokenBlacklistInit } from "./Auth/TokenBlacklistModel";
+import { userRolesAssocInit } from "./Privileges/UserRolesAssocModel";
 
 interface IDb {
   sequelize: Sequelize;

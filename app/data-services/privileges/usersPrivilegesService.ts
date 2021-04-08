@@ -1,17 +1,17 @@
-import UserRole, { IUserRoleAttributes } from '../../models/Privileges/UserRole';
+import UserRoleModel, { IUserRoleAttributes } from '../../models/Privileges/UserRoleModel';
 // import { Op } from 'sequelize';
 
 const attributes = ['id', 'name', 'createdAt', 'updatedAt'];
 
-export const createUser = async (userAttributes: IUserRoleAttributes): Promise<UserRole> => {
-  const role = await UserRole.create(userAttributes);
+export const createUser = async (userAttributes: IUserRoleAttributes): Promise<UserRoleModel> => {
+  const role = await UserRoleModel.create(userAttributes);
 
   return role;
 };
 
 
-export const getUserRoles = async (): Promise<UserRole[]> => {
-  const roles = await UserRole.findAll({
+export const getUserRoles = async (): Promise<UserRoleModel[]> => {
+  const roles = await UserRoleModel.findAll({
     attributes,
   });
 

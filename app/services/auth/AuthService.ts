@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import env from "../../config/env";
-import { getUserByEmailAndPassword } from "../../data-services/users/users";
-import { blacklistToken } from "../../data-services/auth/auth";
+import { getUserByEmailAndPassword } from "../../data-services/users/usersService";
+import { blacklistToken } from "../../data-services/auth/authService";
 
 /**
  * Generate a Token based on the user id.

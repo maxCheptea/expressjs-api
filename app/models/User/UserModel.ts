@@ -8,7 +8,7 @@ export interface IUserAttributes extends IBaseModel {
   password: string;
 }
 
-class User extends Model<IUserAttributes> implements IUserAttributes {
+class UserModel extends Model<IUserAttributes> implements IUserAttributes {
   id: string | undefined;
   firstname!: string;
   lastname!: string;
@@ -20,7 +20,7 @@ class User extends Model<IUserAttributes> implements IUserAttributes {
 }
 
 export const userInit = (sequelize: Sequelize) => {
-  User.init(
+  UserModel.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -53,4 +53,4 @@ export const userInit = (sequelize: Sequelize) => {
   );
 }
 
-export default User;
+export default UserModel;

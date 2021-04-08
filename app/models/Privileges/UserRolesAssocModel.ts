@@ -1,32 +1,32 @@
 import { Model, DataTypes } from "sequelize";
 import { Sequelize } from "sequelize";
-import User from "../User/User";
-import UserRole from "./UserRole";
+import UserModel from "../User/UserModel";
+import UserRoleModel from "./UserRoleModel";
 
 export interface IUserRolesAttributes {
   user_id: string;
   role_id: string;
 }
 
-class UserRolesAssoc extends Model<IUserRolesAttributes> implements IUserRolesAttributes {
+class UserRolesAssocModel extends Model<IUserRolesAttributes> implements IUserRolesAttributes {
   user_id: string;
   role_id: string;
 }
 
 export const userRolesAssocInit = (sequelize: Sequelize) => {
-  UserRolesAssoc.init(
+  UserRolesAssocModel.init(
     {
       role_id: {
         type: DataTypes.UUID,
         references: {
-          model: UserRole,
+          model: UserRoleModel,
           key: "id"
         }
       },
       user_id: {
         type: DataTypes.UUID,
         references: {
-          model: User,
+          model: UserModel,
           key: "id"
         }
       }
@@ -37,8 +37,8 @@ export const userRolesAssocInit = (sequelize: Sequelize) => {
       sequelize, // passing the `sequelize` instance is required
     },
   );
-  User.belongsToMany(UserRole, { through: UserRolesAssoc, as: 'roles', foreignKey: 'user_id' });
-  UserRole.belongsToMany(User, { through: UserRolesAssoc, as: 'users', foreignKey: 'role_id' });
+  UserModel.belongsToMany(UserRoleModel, { through: UserRolesAssocModel, as: 'roles', foreignKey: 'user_id' });
+  UserRoleModel.belongsToMany(UserModel, { through: UserRolesAssocModel, as: 'users', foreignKey: 'role_id' });
 }
 
-export default UserRolesAssoc;
+export default UserRolesAssocModel;

@@ -6,8 +6,8 @@ import env from './config/env';
 const swaggerUi = require('swagger-ui-express'),
 swaggerDocument = require('../swagger.json');
 
-import userRoutes from './api/routes/user/user';
-import authRoutes from './api/routes/auth/auth';
+import userRoutes from './api/routes/user/userApi';
+import authRoutes from './api/routes/auth/authApi';
 import db  from "./models/index";
 
 const gbs = express();

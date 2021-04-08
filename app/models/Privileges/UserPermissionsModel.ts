@@ -6,7 +6,7 @@ interface IUserPermissionsAttributes extends IBaseModel {
   name: string;
 }
 
-class UserPermission extends Model<IUserPermissionsAttributes> implements IUserPermissionsAttributes {
+class UserPermissionModel extends Model<IUserPermissionsAttributes> implements IUserPermissionsAttributes {
   id?: string;
   name!: string;
 
@@ -15,7 +15,7 @@ class UserPermission extends Model<IUserPermissionsAttributes> implements IUserP
 }
 
 export const userPermissionsInit = (sequelize: Sequelize) => {
-  UserPermission.init(
+  UserPermissionModel.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -36,4 +36,4 @@ export const userPermissionsInit = (sequelize: Sequelize) => {
   );
 }
 
-export default UserPermission;
+export default UserPermissionModel;

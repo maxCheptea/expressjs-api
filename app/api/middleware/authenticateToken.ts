@@ -3,7 +3,7 @@ import { Response, NextFunction } from 'express';
 import IRequest from '../interfaces/IRequest';
 import env from "../../config/env";
 import HttpStatusCode from "../../utils/enums/HttpCodeStatuses";
-import { isTokenBlacklisted } from "../../data-services/auth/auth";
+import { isTokenBlacklisted } from "../../data-services/auth/authService";
 
 /**
  * Authenticate user and attach it to the request

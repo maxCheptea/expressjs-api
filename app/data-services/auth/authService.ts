@@ -1,12 +1,12 @@
 import { Op } from 'sequelize';
-import TokenBlacklist from '../../models/Auth/TokenBlacklist';
+import TokenBlacklistModel from '../../models/Auth/TokenBlacklistModel';
 
 export const blacklistToken = async (token: string): Promise<void> => {
-  await TokenBlacklist.create({ token });
+  await TokenBlacklistModel.create({ token });
 };
 
 export const isTokenBlacklisted = async (token: string): Promise<boolean> => {
-  const result = await TokenBlacklist.findOne({
+  const result = await TokenBlacklistModel.findOne({
     attributes: ['token'],
     where: {
       token: {
