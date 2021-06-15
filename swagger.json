@@ -1,17 +1,24 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.1",
   "info": {
-    "version": "1.0.0",
     "title": "GBS API",
     "description": "My get a Bus Seat Application API",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
-    }
+    },
+    "version": "1.0.0"
   },
-  "host": "localhost:8080",
-  "basePath": "/api/",
-
+  "servers": [
+    {
+      "url": "http://localhost:8080/api/"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "tags": [
     {
       "name": "Authentication",
@@ -20,98 +27,188 @@
     {
       "name": "Users",
       "description": "API for users in the system"
-    },
-    {
-      "name": "Trips",
-      "description": "API for users in the system"
     }
   ],
-
   "paths": {
     "/login": {
       "post": {
-        "tags": ["Authentication"],
-        "description": "User that we want to authenticate",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "body",
-            "description": "User that we want to authenticate",
-            "schema": {
-              "$ref": "#/definitions/Authentication"
-            }
-          }
+        "tags": [
+          "Authentication"
         ],
-        "produces": ["application/json"],
+        "description": "User that we want to authenticate",
+        "requestBody": {
+          "description": "User that we want to authenticate",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Authentication"
+              }
+            }
+          },
+          "required": false
+        },
         "responses": {
           "200": {
             "description": "The user is logged in",
-            "schema": {
-              "$ref": "#/definitions/User"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": { "type": "string", "format": "JWT" }
+                  }
+                }
+              }
             }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
           }
-        }
+        },
+        "x-codegen-request-body-name": "user"
       }
     },
     "/logout": {
       "get": {
-        "tags": ["Authentication"],
+        "tags": [
+          "Authentication"
+        ],
         "summary": "Logout a user",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/user/getAll": {
-      "get": {
-        "security": {
-          "bearerAuth": []
-        },
-        "tags": ["Users"],
-        "summary": "Get all users in system",
-        "responses": {
-          "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Users"
-            }
+            "content": {}
           },
-          "401": {
-            "$ref": "#/definitions/responses/Unauthorized"
+          "500": {
+            "$ref": "#/components/responses/500"
           }
         }
       }
     },
     "/user": {
-      "post": {
-        "tags": ["Users"],
-        "description": "Create new user in system",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "body",
-            "description": "User that we want to create",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
+      "get": {
+        "tags": [
+          "Users"
         ],
-        "produces": ["application/json"],
+        "summary": "Get all users in system",
         "responses": {
           "200": {
-            "description": "New user is created",
-            "schema": {
-              "$ref": "#/definitions/User"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
           }
         }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Create new user in system",
+        "requestBody": {
+          "description": "User that we want to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "New user is created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "409": {
+            "description": "Request conflict - email taken",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email already in use"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Un-processable entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "string",
+                            "example": "some input value"
+                          },
+                          "msg": {
+                            "type": "string",
+                            "example": "Invalid value"
+                          },
+                          "param": {
+                            "type": "string",
+                            "example": "email"
+                          },
+                          "location": {
+                            "type": "string",
+                            "example": "body"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "user"
       }
     },
     "/user/{userId}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get one user",
         "parameters": [
           {
@@ -128,23 +225,37 @@
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
             }
           },
           "401": {
-            "$ref": "#/definitions/responses/Unauthorized"
+            "$ref": "#/components/responses/401"
           },
           "404": {
-            "description": "Not found!"
+            "description": "404 - Not found!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           },
           "500": {
-            "$ref": "#/definitions/responses/InternalServerError"
+            "description": "Internal server error",
+            "content": {}
           }
         }
       },
       "put": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "Create new user in system",
         "parameters": [
           {
@@ -156,99 +267,140 @@
               "type": "string",
               "format": "uuid"
             }
-          },
-          {
-            "name": "user",
-            "in": "body",
-            "description": "User that we want to update",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
           }
         ],
-        "produces": ["application/json"],
+        "requestBody": {
+          "description": "User that we want to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": false
+        },
         "responses": {
           "200": {
             "description": "New user is created",
-            "schema": {
-              "$ref": "#/definitions/User"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
             }
           }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "Authentication": {
-      "required": ["firstname", "lastname", "email", "password"],
-      "properties": {
-        "email": {
-          "type": "string",
-          "format": "email"
         },
-        "password": {
-          "type": "string",
-          "format": "password"
-        }
-      }
-    },
-    "User": {
-      "required": ["firstname", "lastname", "email", "password"],
-      "properties": {
-        "_id": {
-          "type": "integer",
-          "uniqueItems": true,
-          "format": "uuid"
-        },
-        "firstname": {
-          "type": "string"
-        },
-        "lastname": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string",
-          "format": "email"
-        },
-        "password": {
-          "type": "string",
-          "format": "password"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "Users": {
-      "type": "array",
-      "$ref": "#/definitions/User"
-    },
-    "responses": {
-      "Unauthorized": {
-        "description": "Not authorized to access the resource!",
-        "schema": {
-          "$ref": "#definitions/schemas/Error"
-        }
-      },
-      "InternalServerError": {
-        "description": "Internal server error"
-      }
-    },
-    "schemas": {
-      "Error": {
-        "properties": {
-          "status": { "type": "string"},
-          "message": { "type": "string"}
-        }
+        "x-codegen-request-body-name": "user"
       }
     }
   },
   "components": {
+    "schemas": {
+      "Authentication": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        }
+      },
+      "User": {
+        "required": [
+          "email",
+          "firstname",
+          "lastname",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Users": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/User"
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "401": {
+        "description": "Not authorized to access the resource!",
+        "content": {
+          "application/json": {
+            "schema": {}
+          }
+        }
+      },
+      "404": {
+        "description": "404 - Not found!",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "409": {
+        "description": "Request conflict",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal server error",
+        "content": {}
+      }
+    },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
@@ -256,11 +408,5 @@
         "bearerFormat": "JWT"
       }
     }
-  },
-  "security": {
-    "bearerAuth": []
-  },
-  "schemes": ["http"],
-  "consumes": ["application/json"],
-  "produces": ["application/json"]
+  }
 }

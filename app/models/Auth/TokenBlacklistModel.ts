@@ -17,7 +17,7 @@ export const tokenBlacklistInit = (sequelize: Sequelize) => {
     {
       token: {
         type: new DataTypes.STRING(400),
-        allowNull: true,
+        allowNull: false,
       },
     },
     {
