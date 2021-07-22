@@ -1,10 +1,10 @@
-import config from "../config/db.config";
-import { Sequelize } from "sequelize";
-import env from "../config/env";
-import { userInit } from "./User/UserModel";
-import { userRoleInit } from "./Privileges/UserRoleModel";
-import { tokenBlacklistInit } from "./Auth/TokenBlacklistModel";
-import { userRolesAssocInit } from "./Privileges/UserRolesAssocModel";
+import config from '../config/db.config';
+import { Sequelize } from 'sequelize';
+import env from '../config/env';
+import { userInit } from './User/UserModel';
+import { userRoleInit } from './Privileges/UserRoleModel';
+import { tokenBlacklistInit } from './Auth/TokenBlacklistModel';
+import { userRolesAssocInit } from './Privileges/UserRolesAssocModel';
 
 interface IDb {
   sequelize: Sequelize;
@@ -24,12 +24,12 @@ const init = () => {
   userInit(sequelize);
   userRoleInit(sequelize);
   userRolesAssocInit(sequelize);
-}
+};
 
 const db: IDb = {
   sequelize: sequelize,
   Sequelize: Sequelize,
-  init
+  init,
 };
 
 export default db;

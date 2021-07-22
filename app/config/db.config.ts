@@ -1,5 +1,5 @@
-import { Dialect } from "sequelize";
-import config from "./config.json";
+import { Dialect } from 'sequelize';
+import config from './config.json';
 
 interface IDbConfig {
   host: string;

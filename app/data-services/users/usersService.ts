@@ -75,3 +75,16 @@ export const getUserByEmailAndPassword = async (email: string, password: string)
 
   return user;
 };
+
+export const getUserByEmail = async (email: string): Promise<UserModel> => {
+  const user = await UserModel.findOne({
+    attributes,
+    where: {
+      email: {
+        [Op.eq]: email,
+      },
+    },
+  });
+
+  return user;
+};

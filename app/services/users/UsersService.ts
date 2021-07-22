@@ -1,8 +1,23 @@
 import UserModel, { IUserAttributes } from '../../models/User/UserModel';
-import { createUser, getUsers, updateUser, getUserById, deleteUser } from '../../data-services/users/usersService';
+import {
+  createUser,
+  getUsers,
+  updateUser,
+  getUserById,
+  deleteUser,
+  getUserByEmail as retrieveUserByEmail,
+} from '../../data-services/users/usersService';
 
 export const getUser = async (id: string): Promise<UserModel> => {
   const user = await getUserById(id).catch(error => {
+    return Promise.reject(new Error(error.message));
+  });
+
+  return user;
+}
+
+export const getUserByEmail = async (email: string): Promise<UserModel> => {
+  const user = await retrieveUserByEmail(email).catch(error => {
     return Promise.reject(new Error(error.message));
   });
 
