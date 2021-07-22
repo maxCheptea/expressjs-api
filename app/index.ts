@@ -1,21 +1,21 @@
 import express from 'express';
 import cors from 'cors';
+
 import env from './config/env';
-
-const swaggerUi = require('swagger-ui-express'),
-swaggerDocument = require('../swagger.json');
-
 import userRoutes from './api/routes/user/userApi';
 import authRoutes from './api/routes/auth/authApi';
-import db  from "./models/index";
+import db from './models/index';
 import HttpStatusCode from './utils/enums/HttpCodeStatuses';
 
+import swaggerDocument from '../swagger.json';
+const swaggerUi = require('swagger-ui-express');
+
 const gbs = express();
-gbs.disable("x-powered-by");
+gbs.disable('x-powered-by');
 
 db.init();
 
-var corsOptions = {
+const corsOptions = {
   origin: `http://localhost:${env.port}`,
 };
 
