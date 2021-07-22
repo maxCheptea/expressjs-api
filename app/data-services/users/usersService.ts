@@ -83,7 +83,7 @@ export const getUserByEmail = async (email: string): Promise<UserModel> => {
       email: {
         [Op.eq]: email,
       },
-    }
+    },
   });
 
   return user;

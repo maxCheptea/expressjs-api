@@ -6,23 +6,23 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: 'users',
-          key: 'id'
+          key: 'id',
         },
         onUpdate: 'no action',
-        onDelete: 'cascade'
+        onDelete: 'cascade',
       },
       role_id: {
         type: Sequelize.UUID,
         references: {
           model: 'user_roles',
-          key: 'id'
+          key: 'id',
         },
         onUpdate: 'no action',
-        onDelete: 'cascade'
-      }
+        onDelete: 'cascade',
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('user_roles_assoc');
-  }
+  },
 };
