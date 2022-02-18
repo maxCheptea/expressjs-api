@@ -15,7 +15,7 @@ authRoutes.post('/login', async (req, res) => {
 });
 
 authRoutes.get('/logout', async (req, res) => {
-    const authHeader = req.headers['authorization'];
+    const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
     
     if (token) {

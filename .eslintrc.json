@@ -18,5 +18,6 @@
         "quotes": ["error", "single"],
         "comma-dangle": ["error", "always-multiline"],
         "semi": ["error", "always", { "omitLastInOneLineBlock": true }]
+        // "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
     }
 }

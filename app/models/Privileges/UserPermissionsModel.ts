@@ -1,6 +1,5 @@
-import { Model, DataTypes } from "sequelize";
-import { Sequelize } from "sequelize";
-import IBaseModel from "../IBaseModel";
+import { Model, DataTypes, Sequelize } from 'sequelize';
+import IBaseModel from '../IBaseModel';
 
 interface IUserPermissionsAttributes extends IBaseModel {
   name: string;
@@ -21,7 +20,7 @@ export const userPermissionsInit = (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
-        defaultValue: DataTypes.UUIDV4
+        defaultValue: DataTypes.UUIDV4,
       },
       name: {
         type: new DataTypes.STRING(100),
@@ -29,11 +28,11 @@ export const userPermissionsInit = (sequelize: Sequelize) => {
       },
     },
     {
-      tableName: "user_permissions",
+      tableName: 'user_permissions',
       timestamps: true,
       sequelize, // passing the `sequelize` instance is required
     },
   );
-}
+};
 
 export default UserPermissionModel;

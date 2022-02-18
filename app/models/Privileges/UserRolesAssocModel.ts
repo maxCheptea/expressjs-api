@@ -1,7 +1,6 @@
-import { Model, DataTypes } from "sequelize";
-import { Sequelize } from "sequelize";
-import UserModel from "../User/UserModel";
-import UserRoleModel from "./UserRoleModel";
+import { Model, DataTypes, Sequelize } from 'sequelize';
+import UserModel from '../User/UserModel';
+import UserRoleModel from './UserRoleModel';
 
 export interface IUserRolesAttributes {
   user_id: string;
@@ -20,19 +19,19 @@ export const userRolesAssocInit = (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         references: {
           model: UserRoleModel,
-          key: "id"
-        }
+          key: 'id',
+        },
       },
       user_id: {
         type: DataTypes.UUID,
         references: {
           model: UserModel,
-          key: "id"
-        }
-      }
+          key: 'id',
+        },
+      },
     },
     {
-      tableName: "user_roles_assoc",
+      tableName: 'user_roles_assoc',
       timestamps: false,
       sequelize, // passing the `sequelize` instance is required
     },
