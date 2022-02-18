@@ -1,5 +1,5 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
-import IBaseModel from "../IBaseModel";
+import { Sequelize, Model, DataTypes } from 'sequelize';
+import IBaseModel from '../IBaseModel';
 
 export interface IUserAttributes extends IBaseModel {
   firstname: string;
@@ -47,11 +47,11 @@ export const userInit = (sequelize: Sequelize) => {
       },
     },
     {
-      tableName: "users",
+      tableName: 'users',
       timestamps: true,
       sequelize, // passing the `sequelize` instance is required
     },
   );
-}
+};
 
 export default UserModel;

@@ -16,13 +16,12 @@ const attachCurrentUser = async (req: IRequest, res: Response, next: NextFunctio
       attributes: ['id', 'email', 'firstname', 'lastname'],
       where: {
         id: {
-          [Op.eq]: '11876683-8979-4dc2-8b63-34b93190aea0'
-        }
-      }
+          [Op.eq]: '11876683-8979-4dc2-8b63-34b93190aea0',
+        },
+      },
     });
 
     if (user) {
-      // eturn res.sendStatus(401);
       Reflect.deleteProperty(user, 'password');
     }
 

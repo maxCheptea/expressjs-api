@@ -10,9 +10,9 @@ export const isTokenBlacklisted = async (token: string): Promise<boolean> => {
     attributes: ['token'],
     where: {
       token: {
-        [Op.eq]: token
-      }
-    } 
+        [Op.eq]: token,
+      },
+    },
   });
 
   return result !== null;

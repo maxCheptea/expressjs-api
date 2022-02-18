@@ -1,5 +1,5 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
-import IBaseModel from "../IBaseModel";
+import { Sequelize, Model, DataTypes } from 'sequelize';
+import IBaseModel from '../IBaseModel';
 
 export interface IUserRoleAttributes extends IBaseModel {
   name: string;
@@ -20,7 +20,7 @@ export const userRoleInit = (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
-        defaultValue: DataTypes.UUIDV4
+        defaultValue: DataTypes.UUIDV4,
       },
       name: {
         type: new DataTypes.STRING(100),
@@ -28,11 +28,11 @@ export const userRoleInit = (sequelize: Sequelize) => {
       },
     },
     {
-      tableName: "user_roles",
+      tableName: 'user_roles',
       timestamps: true,
       sequelize, // passing the `sequelize` instance is required
     },
   );
-}
+};
 
 export default UserRoleModel;

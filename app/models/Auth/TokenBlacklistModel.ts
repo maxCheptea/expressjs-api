@@ -1,5 +1,4 @@
-import { Model, DataTypes } from "sequelize";
-import { Sequelize } from "sequelize";
+import { Model, DataTypes, Sequelize } from 'sequelize';
 
 export interface ITokenBlacklistAttributes {
   token: string;
@@ -21,11 +20,11 @@ export const tokenBlacklistInit = (sequelize: Sequelize) => {
       },
     },
     {
-      tableName: "token_blacklist",
+      tableName: 'token_blacklist',
       timestamps: true,
       sequelize, // passing the `sequelize` instance is required
     },
   );
-}
+};
 
 export default TokenBlacklistModel;

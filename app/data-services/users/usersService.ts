@@ -11,7 +11,7 @@ export const createUser = async (userAttributes: IUserAttributes): Promise<UserM
 };
 
 export const updateUser = async (id: string, userAttributes: IUserAttributes): Promise<UserModel[]> => {
-  const [ _, users ] = await UserModel.update(
+  const [_, users] = await UserModel.update(
     userAttributes,
     {
       where: {
@@ -58,7 +58,7 @@ export const getUsers = async (): Promise<UserModel[]> => {
   });
 
   return users;
-}
+};
 
 export const getUserByEmailAndPassword = async (email: string, password: string): Promise<UserModel> => {
   const user = await UserModel.findOne({
@@ -69,8 +69,8 @@ export const getUserByEmailAndPassword = async (email: string, password: string)
       },
       password: {
         [Op.eq]: password,
-      }
-    }
+      },
+    },
   });
 
   return user;
